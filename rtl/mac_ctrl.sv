@@ -41,9 +41,9 @@ module mac_ctrl
   hwpe_ctrl_intf_periph.slave                   periph
 );
 
-  ctrl_slave_t   slave_ctrl;
-  flags_slave_t  slave_flags;
-  ctrl_regfile_t reg_file;
+  ctrl_slave_t   slave_ctrl;    //done, evt, ext_flags[32]      
+  flags_slave_t  slave_flags;   //start, evt, done, is_working, enable, sw_evt, ext_id, ext_we, ext_re  
+  ctrl_regfile_t reg_file;      //hwpe_params, generic_params, ext_data
 
   logic unsigned [31:0] static_reg_nb_iter;
   logic unsigned [31:0] static_reg_len_iter;
@@ -52,13 +52,13 @@ module mac_ctrl
   logic unsigned [15:0] static_reg_shift;
   logic static_reg_simplemul;
 
-  uloop_bytecode_t [31:0] uloop_bytecode;
-  uloop_code_t uloop_code;
-  ctrl_uloop_t   uloop_ctrl;
-  flags_uloop_t  uloop_flags;
+  uloop_bytecode_t [31:0] uloop_bytecode;     //op_sel, a[4:0], b[4:0]
+  uloop_code_t uloop_code;                    //uloop_loops_t[6] loops (uloop_addr, nb_ops),  uloop_byte_code[32]  code (op_sel, a, b) range
+  ctrl_uloop_t   uloop_ctrl;                  // enable, ready, clear
+  flags_uloop_t  uloop_flags;                 //done, valid, ready, offs[6][32], idx, idx_update, loop
   logic [11:0][31:0] uloop_registers_read;
 
-  ctrl_fsm_t fsm_ctrl;
+  ctrl_fsm_t fsm_ctrl;                        //simple_mul, shift, len
 
   /* Peripheral slave & register file */
   hwpe_ctrl_slave #(
@@ -72,9 +72,9 @@ module mac_ctrl
     .rst_ni   ( rst_ni      ),
     .clear_o  ( clear_o     ),
     .cfg      ( periph      ),
-    .ctrl_i   ( slave_ctrl  ),
-    .flags_o  ( slave_flags ),
-    .reg_file ( reg_file    )
+    .ctrl_i   ( slave_ctrl  ),  
+    .flags_o  ( slave_flags ),  
+    .reg_file ( reg_file    )   
   );
   assign evt_o = slave_flags.evt;
 
