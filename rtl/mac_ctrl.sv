@@ -88,11 +88,11 @@ module mac_ctrl
 
   /* Microcode processor */
   generate
-    if(ULOOP_HARDWIRED == 1) begin : hardwired_uloop_gen
-      assign uloop_bytecode = 196'h00000000000000000000000000000000000008cd11a12c05;
+    if(ULOOP_HARDWIRED == 1) begin : hardwired_uloop_gen    // not achieved aslan (matsadda3osh dema3'na b2a)
+      assign uloop_bytecode = 196'h00000000000000000000000000000000000008cd11a12c05;  //taken from running uloop_compile.py after compiling code.yml file (in hwpe-mac-engine/uloop)
     end
     else begin : not_hardwired_uloop_gen
-      assign uloop_bytecode = reg_file.generic_params[5:0];
+      assign uloop_bytecode = reg_file.generic_params[5:0]; // this's the taken branch
     end
   endgenerate
 

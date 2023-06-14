@@ -27,13 +27,6 @@
  */
 
 import mac_package::*;
- 
-// all the changes we are going to implement:
-//  1. remove b_i, c_i -> requires to remove all the propagates streams upward (stream b,c, tcdm b,c)
-//     and change the number of ports from 4 into 2
-
-
-
 
 module mac_engine
 (
