@@ -324,4 +324,43 @@ module mac_engine
   `endif /* VERILATOR */
   `endif /* SYNTHESIS */
 
+
+wire                    clk_in,
+wire                    rst_n,
+wire                    enable_in, //a pulse for a clock cycle 
+wire   signed [DATA_WIDTH - 1 : 0]    a11, a12,a13,
+wire   signed [DATA_WIDTH - 1 : 0]    a21, a22,a23,
+wire   signed [DATA_WIDTH - 1 : 0]    a31, a32,a33,
+
+reg                     data_valid_out, //a pulse for a clock cycle 
+reg    signed [DATA_WIDTH - 1 : 0]    b11, b12,b13,
+reg    signed [DATA_WIDTH - 1 : 0]    b21, b22,b23,
+reg    signed [DATA_WIDTH - 1 : 0]    b31, b32,b33
+
+
+mat_inv_top mat_inv_i (.*);
+
+// module mat_inv_top (
+//     parameter INT_BITS = 7,
+//     parameter FRACT_BITS = 17,  
+//     parameter DATA_WIDTH = INT_BITS + FRACT_BITS,
+//     parameter ITERATIONS = 20   // will DEFINITELY be changed for syntheses 
+// ) (
+//     input   wire                    clk_in,
+//     input   wire                    rst_n,
+//     input   wire                    enable_in, //a pulse for a clock cycle 
+//     input   wire   signed [DATA_WIDTH - 1 : 0]    a11, a12,a13,
+//     input   wire   signed [DATA_WIDTH - 1 : 0]    a21, a22,a23,
+//     input   wire   signed [DATA_WIDTH - 1 : 0]    a31, a32,a33,
+
+//     output  reg                     data_valid_out, //a pulse for a clock cycle 
+//     output  reg    signed [DATA_WIDTH - 1 : 0]    b11, b12,b13,
+//     output  reg    signed [DATA_WIDTH - 1 : 0]    b21, b22,b23,
+//     output  reg    signed [DATA_WIDTH - 1 : 0]    b31, b32,b33
+// );
+
+
+
+
+
 endmodule // mac_engine
