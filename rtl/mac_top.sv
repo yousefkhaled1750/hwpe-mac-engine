@@ -46,16 +46,16 @@ module mac_top
   ) a (
     .clk ( clk_i )
   );
-  hwpe_stream_intf_stream #(
-    .DATA_WIDTH(32)
-  ) b (
-    .clk ( clk_i )
-  );
-  hwpe_stream_intf_stream #(
-    .DATA_WIDTH(32)
-  ) c (
-    .clk ( clk_i )
-  );
+  //hwpe_stream_intf_stream #(
+  //  .DATA_WIDTH(32)
+  //) b (
+  //  .clk ( clk_i )
+  //);
+  //hwpe_stream_intf_stream #(
+  //  .DATA_WIDTH(32)
+  //) c (
+  //  .clk ( clk_i )
+  //);
   hwpe_stream_intf_stream #(
     .DATA_WIDTH(32)
   ) d (
@@ -67,8 +67,8 @@ module mac_top
     .rst_ni           ( rst_ni         ),
     .test_mode_i      ( test_mode_i    ),
     .a_i              ( a.sink         ),
-    .b_i              ( b.sink         ),
-    .c_i              ( c.sink         ),
+    //.b_i              ( b.sink         ),
+    //.c_i              ( c.sink         ),
     .d_o              ( d.source       ),
     .ctrl_i           ( engine_ctrl    ),
     .flags_o          ( engine_flags   )
@@ -83,8 +83,8 @@ module mac_top
     .enable_i         ( enable         ),
     .clear_i          ( clear          ),
     .a_o              ( a.source       ),
-    .b_o              ( b.source       ),
-    .c_o              ( c.source       ),
+    //.b_o              ( b.source       ),
+    //.c_o              ( c.source       ),
     .d_i              ( d.sink         ),
     .tcdm             ( tcdm           ),
     .ctrl_i           ( streamer_ctrl  ),

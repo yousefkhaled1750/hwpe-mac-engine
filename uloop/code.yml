@@ -23,10 +23,10 @@
 # mnemonics to simplify microcode writing
 mnemonics:
     a:           0
-    b:           1
-    c:           2
+#    b:           1
+#    c:           2
     d:           3
-    nb_iter:     4    # dah el number of loops kol loop gowah (len_iter) iterations
+    nb_iter:     1    # dah el number of loops kol loop gowah (len_iter) iterations #change! from 4 to 1
     iter_stride: 5    #3'aleban, deh ma3naha en e7na ben-update kol iteration
     one_stride:  6    #we deh manaha en e7na ben-update kol loop
 
@@ -34,6 +34,6 @@ mnemonics:
 code:
   loop0:
     - { op : add, a : a, b : iter_stride, } # move to next subset of a
-    - { op : add, a : b, b : iter_stride, } # move to next subset of b
-    - { op : add, a : c, b : one_stride,  } # move to next subset of c
-    - { op : add, a : d, b : one_stride,  } # move to next subset of d
+#    - { op : add, a : b, b : iter_stride, } # move to next subset of b
+#    - { op : add, a : c, b : one_stride,  } # move to next subset of c
+    - { op : add, a : d, b : iter_stride, } # move to next subset of d  #change! from one_stride to iter_stride

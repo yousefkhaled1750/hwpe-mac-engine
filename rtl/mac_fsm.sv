@@ -66,29 +66,31 @@ module mac_fsm (
     ctrl_streamer_o.a_source_ctrl.addressgen_ctrl.loop_outer  = '0;
     ctrl_streamer_o.a_source_ctrl.addressgen_ctrl.realign_type = '0;
     // b stream
-    ctrl_streamer_o.b_source_ctrl.addressgen_ctrl.trans_size  = ctrl_i.len;
-    ctrl_streamer_o.b_source_ctrl.addressgen_ctrl.line_stride = '0;
-    ctrl_streamer_o.b_source_ctrl.addressgen_ctrl.line_length = ctrl_i.len;
-    ctrl_streamer_o.b_source_ctrl.addressgen_ctrl.feat_stride = '0;
-    ctrl_streamer_o.b_source_ctrl.addressgen_ctrl.feat_length = 1;
-    ctrl_streamer_o.b_source_ctrl.addressgen_ctrl.base_addr   = reg_file_i.hwpe_params[MAC_REG_B_ADDR] + (flags_uloop_i.offs[MAC_UCODE_B_OFFS]);
-    ctrl_streamer_o.b_source_ctrl.addressgen_ctrl.feat_roll   = '0;
-    ctrl_streamer_o.b_source_ctrl.addressgen_ctrl.loop_outer  = '0;
-    ctrl_streamer_o.b_source_ctrl.addressgen_ctrl.realign_type = '0;
+    //  ctrl_streamer_o.b_source_ctrl.addressgen_ctrl.trans_size  = ctrl_i.len;
+    //  ctrl_streamer_o.b_source_ctrl.addressgen_ctrl.line_stride = '0;
+    //  ctrl_streamer_o.b_source_ctrl.addressgen_ctrl.line_length = ctrl_i.len;
+    //  ctrl_streamer_o.b_source_ctrl.addressgen_ctrl.feat_stride = '0;
+    //  ctrl_streamer_o.b_source_ctrl.addressgen_ctrl.feat_length = 1;
+    //  ctrl_streamer_o.b_source_ctrl.addressgen_ctrl.base_addr   = reg_file_i.hwpe_params[MAC_REG_B_ADDR] + (flags_uloop_i.offs[MAC_UCODE_B_OFFS]);
+    //  ctrl_streamer_o.b_source_ctrl.addressgen_ctrl.feat_roll   = '0;
+    //  ctrl_streamer_o.b_source_ctrl.addressgen_ctrl.loop_outer  = '0;
+    //  ctrl_streamer_o.b_source_ctrl.addressgen_ctrl.realign_type = '0;
     // c stream
-    ctrl_streamer_o.c_source_ctrl.addressgen_ctrl.trans_size  = 1;
-    ctrl_streamer_o.c_source_ctrl.addressgen_ctrl.line_stride = '0;
-    ctrl_streamer_o.c_source_ctrl.addressgen_ctrl.line_length = 1;
-    ctrl_streamer_o.c_source_ctrl.addressgen_ctrl.feat_stride = '0;
-    ctrl_streamer_o.c_source_ctrl.addressgen_ctrl.feat_length = 1;
-    ctrl_streamer_o.c_source_ctrl.addressgen_ctrl.base_addr   = reg_file_i.hwpe_params[MAC_REG_C_ADDR] + (flags_uloop_i.offs[MAC_UCODE_C_OFFS]);
-    ctrl_streamer_o.c_source_ctrl.addressgen_ctrl.feat_roll   = '0;
-    ctrl_streamer_o.c_source_ctrl.addressgen_ctrl.loop_outer  = '0;
-    ctrl_streamer_o.c_source_ctrl.addressgen_ctrl.realign_type = '0;
+    //  ctrl_streamer_o.c_source_ctrl.addressgen_ctrl.trans_size  = 1;
+    //  ctrl_streamer_o.c_source_ctrl.addressgen_ctrl.line_stride = '0;
+    //  ctrl_streamer_o.c_source_ctrl.addressgen_ctrl.line_length = 1;
+    //  ctrl_streamer_o.c_source_ctrl.addressgen_ctrl.feat_stride = '0;
+    //  ctrl_streamer_o.c_source_ctrl.addressgen_ctrl.feat_length = 1;
+    //  ctrl_streamer_o.c_source_ctrl.addressgen_ctrl.base_addr   = reg_file_i.hwpe_params[MAC_REG_C_ADDR] + (flags_uloop_i.offs[MAC_UCODE_C_OFFS]);
+    //  ctrl_streamer_o.c_source_ctrl.addressgen_ctrl.feat_roll   = '0;
+    //  ctrl_streamer_o.c_source_ctrl.addressgen_ctrl.loop_outer  = '0;
+    //  ctrl_streamer_o.c_source_ctrl.addressgen_ctrl.realign_type = '0;
     // d stream
-    ctrl_streamer_o.d_sink_ctrl.addressgen_ctrl.trans_size  = (ctrl_i.simple_mul) ? ctrl_i.len : 1;
+    //ctrl_streamer_o.d_sink_ctrl.addressgen_ctrl.trans_size  = (ctrl_i.simple_mul) ? ctrl_i.len : 1;
+    ctrl_streamer_o.d_sink_ctrl.addressgen_ctrl.trans_size  = ctrl_i.len ;
     ctrl_streamer_o.d_sink_ctrl.addressgen_ctrl.line_stride = '0;
-    ctrl_streamer_o.d_sink_ctrl.addressgen_ctrl.line_length = (ctrl_i.simple_mul) ? ctrl_i.len : 1;
+    //ctrl_streamer_o.d_sink_ctrl.addressgen_ctrl.line_length = (ctrl_i.simple_mul) ? ctrl_i.len : 1;
+    ctrl_streamer_o.d_sink_ctrl.addressgen_ctrl.line_length = ctrl_i.len ;
     ctrl_streamer_o.d_sink_ctrl.addressgen_ctrl.feat_stride = '0;
     ctrl_streamer_o.d_sink_ctrl.addressgen_ctrl.feat_length = 1;
     ctrl_streamer_o.d_sink_ctrl.addressgen_ctrl.base_addr   = reg_file_i.hwpe_params[MAC_REG_D_ADDR] + (flags_uloop_i.offs[MAC_UCODE_D_OFFS]);
@@ -100,8 +102,8 @@ module mac_fsm (
     ctrl_engine_o.clear      = '1;
     ctrl_engine_o.enable     = '1;
     ctrl_engine_o.start      = '0;
-    ctrl_engine_o.simple_mul = ctrl_i.simple_mul;
-    ctrl_engine_o.shift      = ctrl_i.shift;
+    //ctrl_engine_o.simple_mul = ctrl_i.simple_mul;
+    //ctrl_engine_o.shift      = ctrl_i.shift;
     ctrl_engine_o.len        = ctrl_i.len;
 
     // slave
@@ -111,8 +113,8 @@ module mac_fsm (
     // real finite-state machine
     next_state   = curr_state;
     ctrl_streamer_o.a_source_ctrl.req_start = '0;
-    ctrl_streamer_o.b_source_ctrl.req_start = '0;
-    ctrl_streamer_o.c_source_ctrl.req_start = '0;
+    //ctrl_streamer_o.b_source_ctrl.req_start = '0;
+    //ctrl_streamer_o.c_source_ctrl.req_start = '0;
     ctrl_streamer_o.d_sink_ctrl.req_start   = '0;
     ctrl_uloop_o.enable                     = '0;
     ctrl_uloop_o.clear                      = '0;
@@ -128,17 +130,17 @@ module mac_fsm (
       FSM_START: begin
         // update the indeces, then load the first feature
         if(flags_streamer_i.a_source_flags.ready_start &
-           flags_streamer_i.b_source_flags.ready_start &
-           flags_streamer_i.c_source_flags.ready_start &
+           //flags_streamer_i.b_source_flags.ready_start &
+           //flags_streamer_i.c_source_flags.ready_start &
            flags_streamer_i.d_sink_flags.ready_start) begin
           next_state  = FSM_COMPUTE;
           ctrl_engine_o.start  = 1'b1;
           ctrl_engine_o.clear  = 1'b0;
           ctrl_engine_o.enable = 1'b1;
           ctrl_streamer_o.a_source_ctrl.req_start = 1'b1;
-          ctrl_streamer_o.b_source_ctrl.req_start = 1'b1;
-          if(~ctrl_i.simple_mul)
-            ctrl_streamer_o.c_source_ctrl.req_start = 1'b1;
+          //ctrl_streamer_o.b_source_ctrl.req_start = 1'b1;
+          //if(~ctrl_i.simple_mul)
+          //  ctrl_streamer_o.c_source_ctrl.req_start = 1'b1;
           ctrl_streamer_o.d_sink_ctrl.req_start = 1'b1;
         end
         else begin
@@ -148,7 +150,7 @@ module mac_fsm (
       FSM_COMPUTE: begin
         ctrl_engine_o.clear  = 1'b0;
         // compute, then update the indeces (and write output if necessary)
-        if((flags_engine_i.cnt == ctrl_i.len) & flags_engine_i.acc_valid) begin
+        if((flags_engine_i.cnt_out == ctrl_i.len) & flags_engine_i.mat_valid) begin
           next_state = FSM_UPDATEIDX;
         end
       end
@@ -161,17 +163,17 @@ module mac_fsm (
           next_state = FSM_TERMINATE;
         end
         else if(flags_streamer_i.a_source_flags.ready_start &
-                flags_streamer_i.b_source_flags.ready_start &
-                flags_streamer_i.c_source_flags.ready_start &
+                //flags_streamer_i.b_source_flags.ready_start &
+                //flags_streamer_i.c_source_flags.ready_start &
                 flags_streamer_i.d_sink_flags.ready_start) begin
           next_state = FSM_COMPUTE;
           ctrl_engine_o.start  = 1'b1;
           ctrl_engine_o.clear  = 1'b0;
           ctrl_engine_o.enable = 1'b1;
           ctrl_streamer_o.a_source_ctrl.req_start = 1'b1;
-          ctrl_streamer_o.b_source_ctrl.req_start = 1'b1;
-          if(~ctrl_i.simple_mul)
-            ctrl_streamer_o.c_source_ctrl.req_start = 1'b1;
+          //ctrl_streamer_o.b_source_ctrl.req_start = 1'b1;
+          //if(~ctrl_i.simple_mul)
+          //  ctrl_streamer_o.c_source_ctrl.req_start = 1'b1;
           ctrl_streamer_o.d_sink_ctrl.req_start = 1'b1;
         end
         else begin
@@ -184,16 +186,16 @@ module mac_fsm (
         ctrl_engine_o.enable = 1'b0;
         ctrl_uloop_o.enable  = 1'b0;
         if(flags_streamer_i.a_source_flags.ready_start &
-           flags_streamer_i.b_source_flags.ready_start &
-           flags_streamer_i.c_source_flags.ready_start &
+          // flags_streamer_i.b_source_flags.ready_start &
+          // flags_streamer_i.c_source_flags.ready_start &
            flags_streamer_i.d_sink_flags.ready_start) begin
           next_state = FSM_COMPUTE;
           ctrl_engine_o.start = 1'b1;
           ctrl_engine_o.enable = 1'b1;
           ctrl_streamer_o.a_source_ctrl.req_start = 1'b1;
-          ctrl_streamer_o.b_source_ctrl.req_start = 1'b1;
-          if(~ctrl_i.simple_mul)
-            ctrl_streamer_o.c_source_ctrl.req_start = 1'b1;
+          //ctrl_streamer_o.b_source_ctrl.req_start = 1'b1;
+          //if(~ctrl_i.simple_mul)
+          //  ctrl_streamer_o.c_source_ctrl.req_start = 1'b1;
           ctrl_streamer_o.d_sink_ctrl.req_start   = 1'b1;
         end
       end
@@ -202,8 +204,8 @@ module mac_fsm (
         ctrl_engine_o.clear  = 1'b0;
         ctrl_engine_o.enable = 1'b0;
         if(flags_streamer_i.a_source_flags.ready_start &
-           flags_streamer_i.b_source_flags.ready_start &
-           flags_streamer_i.c_source_flags.ready_start &
+          // flags_streamer_i.b_source_flags.ready_start &
+          // flags_streamer_i.c_source_flags.ready_start &
            flags_streamer_i.d_sink_flags.ready_start) begin
           next_state = FSM_IDLE;
           ctrl_slave_o.done = 1'b1;

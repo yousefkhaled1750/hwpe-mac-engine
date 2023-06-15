@@ -6,7 +6,7 @@ package:
 dependencies:
   hwpe-stream: { git: "https://github.com/pulp-platform/hwpe-stream.git", version: 1.6.3 }
   hwpe-ctrl:   { git: "https://github.com/pulp-platform/hwpe-ctrl.git", version: 1.6.1 }
-  matrix_inversion: { git: "https://github.com/yousefkhaled1750/Matrix_Inversion_HDL.git", rev: "shared_implementaion" }
+  matrix_inversion: { git: "https://github.com/yousefkhaled1750/Matrix_Inversion_HDL.git", rev: "25c114e56d14e830eb4db869d25f6a499429a287" }
 
 sources:
   - include_dirs:
