@@ -47,6 +47,7 @@ module mac_ctrl
 
   logic unsigned [31:0] static_reg_nb_iter;
   logic unsigned [31:0] static_reg_len_iter;
+  logic unsigned [31:0] static_reg_mu;
   logic unsigned [31:0] static_reg_vectstride;
   logic unsigned [31:0] static_reg_onestride;
   logic unsigned [15:0] static_reg_shift;
@@ -81,6 +82,7 @@ module mac_ctrl
   /* Direct register file mappings */
   assign static_reg_nb_iter    = reg_file.hwpe_params[MAC_REG_NB_ITER]  + 1;
   assign static_reg_len_iter   = reg_file.hwpe_params[MAC_REG_LEN_ITER] + 1;
+  assign static_reg_mu   = reg_file.hwpe_params[MAC_REG_MU] + 1;
   //assign static_reg_shift      = reg_file.hwpe_params[MAC_REG_SHIFT_SIMPLEMUL][31:16];
   //assign static_reg_simplemul  = reg_file.hwpe_params[MAC_REG_SHIFT_SIMPLEMUL][0];
   assign static_reg_vectstride = reg_file.hwpe_params[MAC_REG_SHIFT_VECTSTRIDE];
@@ -148,6 +150,7 @@ module mac_ctrl
     //fsm_ctrl.simple_mul = static_reg_simplemul;
     //fsm_ctrl.shift      = static_reg_shift[$clog2(32)-1:0];
     fsm_ctrl.len        = static_reg_len_iter[$clog2(MAC_CNT_LEN):0];
+    fsm_ctrl.mu         = static_reg_mu[31:0];
   end
 
 endmodule // mac_ctrl

@@ -6,7 +6,8 @@ package:
 dependencies:
   hwpe-stream: { git: "https://github.com/pulp-platform/hwpe-stream.git", version: 1.6.3 }
   hwpe-ctrl:   { git: "https://github.com/pulp-platform/hwpe-ctrl.git", version: 1.6.1 }
-  matrix_inversion: { git: "https://github.com/yousefkhaled1750/Matrix_Inversion_HDL.git", rev: "25c114e56d14e830eb4db869d25f6a499429a287" }
+  # matrix_inversion: { git: "https://github.com/yousefkhaled1750/Matrix_Inversion_HDL.git", rev: "25c114e56d14e830eb4db869d25f6a499429a287" }
+  farrow_filter:      { git:  "https://github.com/yousefkhaled1750/farrow_filter", rev: "2aa42d9557b9e7acfe5e8542a61d98221e86cca9"             }
 
 sources:
   - include_dirs:

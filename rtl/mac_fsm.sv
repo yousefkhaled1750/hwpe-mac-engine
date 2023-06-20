@@ -101,11 +101,11 @@ module mac_fsm (
     // engine
     ctrl_engine_o.clear      = '1;
     ctrl_engine_o.enable     = '1;
-    ctrl_engine_o.start      = '0;
+    //ctrl_engine_o.start      = '0;
     //ctrl_engine_o.simple_mul = ctrl_i.simple_mul;
     //ctrl_engine_o.shift      = ctrl_i.shift;
     ctrl_engine_o.len        = ctrl_i.len;
-
+    ctrl_engine_o.mu         = ctrl_i.mu;
     // slave
     ctrl_slave_o.done = '0;
     ctrl_slave_o.evt  = '0;
@@ -134,7 +134,7 @@ module mac_fsm (
            //flags_streamer_i.c_source_flags.ready_start &
            flags_streamer_i.d_sink_flags.ready_start) begin
           next_state  = FSM_COMPUTE;
-          ctrl_engine_o.start  = 1'b1;
+          //ctrl_engine_o.start  = 1'b1;
           ctrl_engine_o.clear  = 1'b0;
           ctrl_engine_o.enable = 1'b1;
           ctrl_streamer_o.a_source_ctrl.req_start = 1'b1;
@@ -150,7 +150,7 @@ module mac_fsm (
       FSM_COMPUTE: begin
         ctrl_engine_o.clear  = 1'b0;
         // compute, then update the indeces (and write output if necessary)
-        if((flags_engine_i.cnt_out == ctrl_i.len) & flags_engine_i.mat_valid) begin
+        if(flags_engine_i.cnt_out == ctrl_i.len) begin
           next_state = FSM_UPDATEIDX;
         end
       end
@@ -167,7 +167,7 @@ module mac_fsm (
                 //flags_streamer_i.c_source_flags.ready_start &
                 flags_streamer_i.d_sink_flags.ready_start) begin
           next_state = FSM_COMPUTE;
-          ctrl_engine_o.start  = 1'b1;
+          //ctrl_engine_o.start  = 1'b1;
           ctrl_engine_o.clear  = 1'b0;
           ctrl_engine_o.enable = 1'b1;
           ctrl_streamer_o.a_source_ctrl.req_start = 1'b1;
@@ -190,7 +190,7 @@ module mac_fsm (
           // flags_streamer_i.c_source_flags.ready_start &
            flags_streamer_i.d_sink_flags.ready_start) begin
           next_state = FSM_COMPUTE;
-          ctrl_engine_o.start = 1'b1;
+          //ctrl_engine_o.start = 1'b1;
           ctrl_engine_o.enable = 1'b1;
           ctrl_streamer_o.a_source_ctrl.req_start = 1'b1;
           //ctrl_streamer_o.b_source_ctrl.req_start = 1'b1;

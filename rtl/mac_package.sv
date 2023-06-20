@@ -27,6 +27,7 @@ package mac_package;
   parameter int unsigned MAC_REG_NB_ITER          = 4;
   parameter int unsigned MAC_REG_LEN_ITER         = 5;
   //parameter int unsigned MAC_REG_SHIFT_SIMPLEMUL  = 6;
+  parameter int unsigned MAC_REG_MU  = 6;
   parameter int unsigned MAC_REG_SHIFT_VECTSTRIDE = 7;
 
   // microcode offset indeces -- this should be aligned to the microcode compiler of course!
@@ -52,8 +53,10 @@ package mac_package;
   typedef struct packed {
     logic clear;
     logic enable;
-    logic start;
+    //logic start;
+    logic unsigned [32-1:0] mu;
     logic unsigned [$clog2(MAC_CNT_LEN):0] len; // 1 bit more as cnt starts from 1, not 0
+
   } ctrl_engine_t; 
 
   // typedef struct packed {
@@ -63,7 +66,7 @@ package mac_package;
 
   typedef struct packed {
     logic unsigned [$clog2(MAC_CNT_LEN):0] cnt_out; // 1 bit more as cnt starts from 1, not 0
-    logic mat_valid;
+    //logic mat_valid;
   } flags_engine_t;
 
 
@@ -88,6 +91,7 @@ package mac_package;
   // } ctrl_fsm_t;
   typedef struct packed {
     logic unsigned [$clog2(MAC_CNT_LEN):0] len; // 1 bit more as cnt starts from 1, not 0
+    logic unsigned [$clog2(MAC_CNT_LEN):0] mu;
   } ctrl_fsm_t;
 
   typedef enum {

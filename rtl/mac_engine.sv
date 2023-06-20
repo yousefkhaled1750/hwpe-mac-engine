@@ -54,20 +54,29 @@ module mac_engine
   output flags_engine_t          flags_o
 );
 
-  logic unsigned [$clog2(MAC_CNT_LEN):0] cnt;
-  logic unsigned [$clog2(MAC_CNT_LEN):0] r_cnt;
+  // logic unsigned [$clog2(MAC_CNT_LEN):0] cnt;
+  // logic unsigned [$clog2(MAC_CNT_LEN):0] r_cnt;
   logic unsigned [$clog2(MAC_CNT_LEN):0] cnt_out;
   logic unsigned [$clog2(MAC_CNT_LEN):0] r_cnt_out;
   
 
-  logic                                   mat_valid; //a pulse for a clock cycle 
-  logic    signed [24 - 1 : 0]    b11, b12,b13;
-  logic    signed [24 - 1 : 0]    b21, b22,b23;
-  logic    signed [24 - 1 : 0]    b31, b32,b33;
+
+  logic farrow_en;
+  logic farrow_valid;
+  logic [32-1:0] farrow_data_in;
+  logic [32-1:0] farrow_data_out;
+  logic [32-1:0] farrow_mu;
+
+
+
+  // logic                                   mat_valid; //a pulse for a clock cycle 
+  // logic    signed [24 - 1 : 0]    b11, b12,b13;
+  // logic    signed [24 - 1 : 0]    b21, b22,b23;
+  // logic    signed [24 - 1 : 0]    b31, b32,b33;
   
-  logic    signed [24 - 1 : 0]    r_b11, r_b12, r_b13;
-  logic    signed [24 - 1 : 0]    r_b21, r_b22, r_b23;
-  logic    signed [24 - 1 : 0]    r_b31, r_b32, r_b33;
+  // logic    signed [24 - 1 : 0]    r_b11, r_b12, r_b13;
+  // logic    signed [24 - 1 : 0]    r_b21, r_b22, r_b23;
+  // logic    signed [24 - 1 : 0]    r_b31, r_b32, r_b33;
   
 
 
@@ -245,52 +254,52 @@ module mac_engine
   // minimal, it was not deemed convenient to move it to another submodule. For bigger
   // FSMs that is typically the most advantageous choice.
   // The counter counts `r_mult` valid outputs.
-  always_comb
-  begin
-    cnt = r_cnt + 1;
-  end
-  // the input counter
-  always_ff @(posedge clk_i or negedge rst_ni)
-  begin
-    if(~rst_ni) begin
-      r_cnt <= '0;
-    end
-    else if(ctrl_i.clear) begin
-      r_cnt <= '0;
-    end
-    else if(ctrl_i.enable) begin
-      // The counter is updated
-      //  1) at the start of operations
-      //  2) when the count value is between 0 and `len` (excluded), and there is a valid `r_mult` handshake.
-      //if ((ctrl_i.start == 1'b1) || ((r_cnt > 0) && (r_cnt < ctrl_i.len) && (r_mult_valid & r_mult_ready == 1'b1))) begin
-      if ((ctrl_i.start == 1'b1) || ((r_cnt > 0) && (a_i.valid & a_i.ready == 1'b1))) begin
-        r_cnt <= cnt;
-      end
-    end
-  end
+  // always_comb
+  // begin
+  //   cnt = r_cnt + 1;
+  // end
+  // // the input counter
+  // always_ff @(posedge clk_i or negedge rst_ni)
+  // begin
+  //   if(~rst_ni) begin
+  //     r_cnt <= '0;
+  //   end
+  //   else if(ctrl_i.clear) begin
+  //     r_cnt <= '0;
+  //   end
+  //   else if(ctrl_i.enable) begin
+  //     // The counter is updated
+  //     //  1) at the start of operations
+  //     //  2) when the count value is between 0 and `len` (excluded), and there is a valid `r_mult` handshake.
+  //     //if ((ctrl_i.start == 1'b1) || ((r_cnt > 0) && (r_cnt < ctrl_i.len) && (r_mult_valid & r_mult_ready == 1'b1))) begin
+  //     if ((ctrl_i.start == 1'b1) || ((r_cnt > 0) && (a_i.valid & a_i.ready == 1'b1))) begin
+  //       r_cnt <= cnt;
+  //     end
+  //   end
+  // end
 
   // the output counter
   // the purpose it to order the mat_inv outputs into d stream
   // using a mux
-  assign cnt_out = r_cnt_out + 1;
-  always_ff @(posedge clk_i or negedge rst_ni)
-  begin
-    if(~rst_ni) begin
-      r_cnt_out <= '0;
-    end
-    else if(ctrl_i.clear) begin
-      r_cnt_out <= '0;
-    end
-    else if(ctrl_i.enable) begin
-      // The counter is updated
-      //  1) at the start of operations
-      //  2) when the count value is between 0 and `len` (excluded), and there is a valid `r_mult` handshake.
-      //if ((ctrl_i.start == 1'b1) || ((r_cnt > 0) && (r_cnt < ctrl_i.len) && (r_mult_valid & r_mult_ready == 1'b1))) begin
-      if ((mat_valid) || ((r_cnt_out > 0) && (r_cnt_out < ctrl_i.len) && (d_o.valid & d_o.ready == 1'b1))) begin
-        r_cnt_out <= cnt_out;
-      end
-    end
-  end
+  // assign cnt_out = r_cnt_out + 1;
+  // always_ff @(posedge clk_i or negedge rst_ni)
+  // begin
+  //   if(~rst_ni) begin
+  //     r_cnt_out <= '0;
+  //   end
+  //   else if(ctrl_i.clear) begin
+  //     r_cnt_out <= '0;
+  //   end
+  //   else if(ctrl_i.enable) begin
+  //     // The counter is updated
+  //     //  1) at the start of operations
+  //     //  2) when the count value is between 0 and `len` (excluded), and there is a valid `r_mult` handshake.
+  //     //if ((ctrl_i.start == 1'b1) || ((r_cnt > 0) && (r_cnt < ctrl_i.len) && (r_mult_valid & r_mult_ready == 1'b1))) begin
+  //     if ((mat_valid) || ((r_cnt_out > 0) && (r_cnt_out < ctrl_i.len) && (d_o.valid & d_o.ready == 1'b1))) begin
+  //       r_cnt_out <= cnt_out;
+  //     end
+  //   end
+  // end
 
 /************************* ************************************ *************************/
 /************************* the engine flag signals after update *************************/
@@ -299,7 +308,7 @@ module mac_engine
   //assign flags_o.cnt = r_cnt;
   assign flags_o.cnt_out = r_cnt_out;
   //assign flags_o.acc_valid = r_acc_valid;
-  assign flags_o.mat_valid = (r_cnt_out == ctrl_i.len);   // -> needs to be added to fsm and the package
+  //assign flags_o.mat_valid = (r_cnt_out == ctrl_i.len);   // -> needs to be added to fsm and the package
 
   // Ready signals have to be propagated backwards through pipeline stages (combinationally).
   // To avoid deadlocks, the following rules have to be followed:
@@ -372,74 +381,74 @@ module mac_engine
 
 
 
-  always_ff @(posedge clk_i or negedge rst_ni)
-  begin : main_fsm_seq
-    if(~rst_ni) begin
-      r_b11 <= '0; r_b12 <= '0; r_b13 = '0;
-      r_b21 <= '0; r_b22 <= '0; r_b23 = '0;
-      r_b31 <= '0; r_b32 <= '0; r_b33 = '0;
-    end
-    else if(ctrl_i.clear) begin
-      r_b11 <= '0; r_b12 <= '0; r_b13 = '0;
-      r_b21 <= '0; r_b22 <= '0; r_b23 = '0;
-      r_b31 <= '0; r_b32 <= '0; r_b33 = '0;
-    end
-    else begin
-        if (mat_valid) begin
-            r_b11 <= b11; r_b12 <= b12; r_b13 = b13;
-            r_b21 <= b21; r_b22 <= b22; r_b23 = b23;
-            r_b31 <= b31; r_b32 <= b32; r_b33 = b33;
-        end
-    end
-  end
+  // always_ff @(posedge clk_i or negedge rst_ni)
+  // begin : main_fsm_seq
+  //   if(~rst_ni) begin
+  //     r_b11 <= '0; r_b12 <= '0; r_b13 = '0;
+  //     r_b21 <= '0; r_b22 <= '0; r_b23 = '0;
+  //     r_b31 <= '0; r_b32 <= '0; r_b33 = '0;
+  //   end
+  //   else if(ctrl_i.clear) begin
+  //     r_b11 <= '0; r_b12 <= '0; r_b13 = '0;
+  //     r_b21 <= '0; r_b22 <= '0; r_b23 = '0;
+  //     r_b31 <= '0; r_b32 <= '0; r_b33 = '0;
+  //   end
+  //   else begin
+  //       if (mat_valid) begin
+  //           r_b11 <= b11; r_b12 <= b12; r_b13 = b13;
+  //           r_b21 <= b21; r_b22 <= b22; r_b23 = b23;
+  //           r_b31 <= b31; r_b32 <= b32; r_b33 = b33;
+  //       end
+  //   end
+  // end
 
-  logic signed [32:0]  data_out_full;
-  // serializing the outputs to d_o
-  always_comb
-  begin : blockName
-    case (r_cnt_out)
-      'd1:  begin
-          data_out_full <= {{8{0}},r_b11};
-        end
-      'd2:  begin
-          data_out_full <= {{8{0}},r_b12};
-        end 
-      'd3:  begin
-          data_out_full <= {{8{0}},r_b13};
-        end
-      'd4:  begin
-          data_out_full <= {{8{0}},r_b21};
-        end
-      'd5:  begin
-          data_out_full <= {{8{0}},r_b22};
-        end 
-      'd6:  begin
-          data_out_full <= {{8{0}},r_b23};
-        end
-      'd7:  begin
-          data_out_full <= {{8{0}},r_b31};
-        end
-      'd8:  begin
-          data_out_full <= {{8{0}},r_b32};
-        end 
-      'd9:  begin
-          data_out_full <= {{8{0}},r_b33};
-        end
-      default: begin
-          data_out_full <= '0;
-      end
-    endcase
-  end
+  // logic signed [32:0]  data_out_full;
+  // // serializing the outputs to d_o
+  // always_comb
+  // begin : blockName
+  //   case (r_cnt_out)
+  //     'd1:  begin
+  //         data_out_full <= {{8{0}},r_b11};
+  //       end
+  //     'd2:  begin
+  //         data_out_full <= {{8{0}},r_b12};
+  //       end 
+  //     'd3:  begin
+  //         data_out_full <= {{8{0}},r_b13};
+  //       end
+  //     'd4:  begin
+  //         data_out_full <= {{8{0}},r_b21};
+  //       end
+  //     'd5:  begin
+  //         data_out_full <= {{8{0}},r_b22};
+  //       end 
+  //     'd6:  begin
+  //         data_out_full <= {{8{0}},r_b23};
+  //       end
+  //     'd7:  begin
+  //         data_out_full <= {{8{0}},r_b31};
+  //       end
+  //     'd8:  begin
+  //         data_out_full <= {{8{0}},r_b32};
+  //       end 
+  //     'd9:  begin
+  //         data_out_full <= {{8{0}},r_b33};
+  //       end
+  //     default: begin
+  //         data_out_full <= '0;
+  //     end
+  //   endcase
+  // end
 
 
   // Output is right-shifted into the correct QF representation. There is currently
   // no support for rounding and for saturation/clipping.
-  always_comb
-  begin
-    d_o.data  = $signed(data_out_full); // no saturation/clipping
-    d_o.valid = ctrl_i.enable & r_cnt_out > 0;
-    d_o.strb  = '1; // strb is always '1 --> all bytes are considered valid
-  end
+  // always_comb
+  // begin
+  //   d_o.data  = $signed(data_out_full); // no saturation/clipping
+  //   d_o.valid = ctrl_i.enable & r_cnt_out > 0;
+  //   d_o.strb  = '1; // strb is always '1 --> all bytes are considered valid
+  // end
 
 // the philosophy of streaming the data is by getting the stream a (serially)
 // and by checking the valid-ready handshake there will be a counter and mux that 
@@ -451,21 +460,81 @@ module mac_engine
 
 
 
-mat_inv_top #(
-  .INT_BITS(7),
-  .FRACT_BITS(17),
-  .ITERATIONS(20)
-) mat_inv_top_i (
-    .clk_i(clk_i),
-    .rst_ni(rst_ni),
-    .clear_i(ctrl_i.clear),
-    .cnt_i(r_cnt),
-    .a_i(a_i.monitor),
-    .mat_valid_o(mat_valid),
-    .*
+// mat_inv_top #(
+//   .INT_BITS(7),
+//   .FRACT_BITS(17),
+//   .ITERATIONS(20)
+// ) mat_inv_top_i (
+//     .clk_i(clk_i),
+//     .rst_ni(rst_ni),
+//     .clear_i(ctrl_i.clear),
+//     .cnt_i(r_cnt),
+//     .a_i(a_i.monitor),
+//     .mat_valid_o(mat_valid),
+//     .*
+// );
+
+
+  assign cnt_out = r_cnt_out + 1;
+  always_ff @(posedge clk_i or negedge rst_ni)
+  begin
+    if(~rst_ni) begin
+      r_cnt_out <= '0;
+    end
+    else if(ctrl_i.clear) begin
+      r_cnt_out <= '0;
+    end
+    else if(ctrl_i.enable) begin
+      // The counter is updated
+      //  1) at the start of operations
+      //  2) when the count value is between 0 and `len` (excluded), and there is a valid `r_mult` handshake.
+      //if ((ctrl_i.start == 1'b1) || ((r_cnt > 0) && (r_cnt < ctrl_i.len) && (r_mult_valid & r_mult_ready == 1'b1))) begin
+      if ((farrow_valid) && (r_cnt_out < ctrl_i.len) && (d_o.valid & d_o.ready == 1'b1)) begin
+        r_cnt_out <= cnt_out;
+      end
+    end
+  end
+
+
+
+always_comb
+  begin
+    d_o.data  = $signed(farrow_data_out); // no saturation/clipping
+    d_o.valid = farrow_valid;
+    d_o.strb  = '1; // strb is always '1 --> all bytes are considered valid
+  end
+
+
+
+always_comb begin
+  farrow_data_in = a_i.data;
+  farrow_en = a_i.valid;
+end
+
+
+
+
+
+farrow_third_sopot farrow_i 
+(
+.clk(clk_i),
+.rst_n(rst_ni),
+.en(farrow_en),
+.in_data(farrow_data_in),
+.mu(ctrl_i.mu),
+.data_out(farrow_data_out),
+.valid(farrow_valid)
 );
 
-
+//module farrow_third_sopot
+//     #(parameter DATA_WIDTH=32,TAPS=8,Q=16,INT=8 ,FRAC=8,latency=7)
+//     (
+// input clk,rst_n,en,
+// input [DATA_WIDTH-1:0] in_data,
+// input [DATA_WIDTH-1:0] mu,
+// output [DATA_WIDTH-1:0] data_out,
+// output reg valid 
+//     );
 
 
 endmodule // mac_engine
